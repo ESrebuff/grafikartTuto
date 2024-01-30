@@ -5,6 +5,7 @@ import { ProductRow } from "./components/products/ProductRow";
 import { useState } from "react";
 import { Timer } from "./components/exercices/Timer";
 import { useIncrement } from "./components/hooks/useIncrement";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface Product {
   category: string;
@@ -37,7 +38,12 @@ function App() {
       return false;
     }
 
-    if (searchProduct && !product.name.toLocaleLowerCase()!.includes(searchProduct.toLocaleLowerCase())) {
+    if (
+      searchProduct &&
+      !product.name
+        .toLocaleLowerCase()!
+        .includes(searchProduct.toLocaleLowerCase())
+    ) {
       return false;
     }
 
@@ -52,7 +58,9 @@ function App() {
         searchProduct={searchProduct}
         onSetSearchProduct={setSearchProduct}
       />
-      <ProductTable products={filteredProductsList} />
+      <ErrorBoundary fallback={<p>Impossible</p>}>
+        <ProductTable products={filteredProductsList} />
+      </ErrorBoundary>
       <Timer />
       <button onClick={increment}>increment</button>
       <button onClick={decrement}>decrement</button>
